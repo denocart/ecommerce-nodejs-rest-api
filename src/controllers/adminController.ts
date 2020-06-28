@@ -120,7 +120,7 @@ export const getAdminRefreshToken = async (req : Request,res: Response) => {
       return res.status(code.BAD_REQUEST).json({'success':false, 'message':"validation error.", 'data':{"refreshToken":"No refreshToken found."}})
     }
 
-    let refreshTokenIsValid = jwt.verify(reqBody.refreshToken, 'sad'); // true
+    let refreshTokenIsValid = jwt.verify(reqBody.refreshToken, secretOrKey); // true
     if (!refreshTokenIsValid) return res.status(code.UNAUTHORIZED).json({'success': false, 'message': "Invalid refreshToken.", 'data':{"refreshToken":'Invalid refreshToken or refreshToken may expired.'}}); 
     logger.error('doc----',checkDoc)
     const payload = {
