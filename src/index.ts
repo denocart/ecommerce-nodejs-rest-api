@@ -6,6 +6,7 @@ import { mongoURI } from "./utils/config";
 import {port} from './utils/config';
 import adminRoute from "./routes/adminRoutes";
 import logger from "./utils/logger";
+import cors from 'cors';
 const app: Application = express();
 
 const morganOption = {
@@ -18,7 +19,7 @@ const morganOption = {
 app.use(morgan('combined', morganOption))
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
- 
+ app.use(cors());
 // parse application/json
 app.use(bodyParser.json())
 /* Establised mongodb connections*/
