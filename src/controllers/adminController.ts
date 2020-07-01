@@ -91,7 +91,7 @@ export const adminLogin = async (req : Request,res: Response) => {
       phoneCode:checkDoc.phoneCode,
       role:checkDoc.role
     }
-    let token = jwt.sign(payload, secretOrKey, { expiresIn: '10m'})
+    let token = jwt.sign(payload, secretOrKey, { expiresIn: '2m'})
     let refreshToken = jwt.sign(payload, secretOrKey, { expiresIn: '30d' })
     checkDoc.refreshToken = refreshToken;
     checkDoc.save();
@@ -131,7 +131,7 @@ export const getAdminRefreshToken = async (req : Request,res: Response) => {
       phoneCode:checkDoc.phoneCode,
       role:checkDoc.role
     }
-    let token = jwt.sign(payload, secretOrKey, { expiresIn: '10m'})
+    let token = jwt.sign(payload, secretOrKey, { expiresIn: '2m'})
     let refreshToken = jwt.sign(payload, secretOrKey, { expiresIn: '30d' })
     checkDoc.refreshToken = refreshToken;
     checkDoc.save();

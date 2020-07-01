@@ -25,12 +25,13 @@ app.use(bodyParser.json())
 /* Establised mongodb connections*/
 app.use('/admin', adminRoute)
 mongoose
-  .connect(mongoURI, { useUnifiedTopology: true, useNewUrlParser: true , useCreateIndex: true})
+  .connect("mongoURI", { useUnifiedTopology: true, useNewUrlParser: true , useCreateIndex: true})
   .then((connectStatus) => {
     console.log("database connections established");
   })
   .catch((error) => {
     console.log(error);
+    process.exit(1);
   });
 
 /* base route test response */  
