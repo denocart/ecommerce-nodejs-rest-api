@@ -12,7 +12,6 @@ import logger from "../utils/logger";
 
 //import npm package
 
-
 export const requestFromAdmin = (req :Request, res:Response, next:NextFunction) =>{
   req.body.requestFrom = 'admin'
   next();
@@ -84,6 +83,7 @@ export const adminLogin = async (req : Request,res: Response) => {
     if (!passwordIsValid) return res.status(code.UNAUTHORIZED).json({'success': false, 'message': "Invalid password.", 'data':{"password":'Invalid password.'}}); 
     logger.error('doc----',checkDoc)
     const payload = {
+      id:checkDoc._id,
       firstName: checkDoc.firstName,
       lastName:checkDoc.lastName,
       email:checkDoc.email,
@@ -91,7 +91,7 @@ export const adminLogin = async (req : Request,res: Response) => {
       phoneCode:checkDoc.phoneCode,
       role:checkDoc.role
     }
-    let token = jwt.sign(payload, secretOrKey, { expiresIn: '2m'})
+    let token = jwt.sign(payload, secretOrKey, { expiresIn: '1d'})
     let refreshToken = jwt.sign(payload, secretOrKey, { expiresIn: '30d' })
     checkDoc.refreshToken = refreshToken;
     checkDoc.save();
@@ -252,7 +252,7 @@ export const editAdmin = async (req : Denocart.IGetUserAuthInfoRequest,res: Resp
         return res.status(code.BAD_REQUEST).json({'success':false, 'message':"validation error", 'data':{"phone":"phone already exist"}})
       }
     }
-    let updateDoc :Partial< Denocart.Iadminresult> = {
+    let updateDoc :Partial< Denocart.IadminUser> = {
       firstName : reqBody.firstName,
       lastName  : reqBody.lastName,
       phone     : reqBody.phone,
@@ -264,7 +264,7 @@ export const editAdmin = async (req : Denocart.IGetUserAuthInfoRequest,res: Resp
         return res.status(code.BAD_REQUEST).json({'success':false, 'message':"validation error", 'data':{"role":"role field is required"}})
       }
     }
-    let adminDoc = await Admin.findByIdAndUpdate(reqBody.adminId,{"$set":updateDoc},{"new":true});
+    let adminDoc = await Admin.findByIdAndUpdate(reqBody.adminId,{$set:updateDoc},{"new":true});
     return res.status(code.OK).json({'success':true, 'message':"Updated successfully"})
   }
   catch(error){
@@ -348,17 +348,25 @@ export const updateRoleIsFalse = (req : Denocart.IGetUserAuthInfoRequest,res: Re
 }
 
 
-export const getAdminProfile  =async (req :Denocart.IGetUserAuthInfoRequest, res:Response, next:NextFunction)=>{
+export const getAdminProfile  =async (req :Request, res:Response, next:NextFunction)=>{
 
   try{
-
-    const adminData =await  Admin.findById(req.user.id).select('-password')
+    const {user} = req;
+    //@ts-ignore
+    const userId = user?.id;
+  
+    const adminData = await Admin.findById(userId).select('-password')
 
     if(adminData){
-      return res.status(code.OK).json({'success':true, 'message':"Login success", 'isAuthenticated':true, 'users':adminData })
+      return res.status(code.OK).json({'success':true, 'message':"Login success", 'isAuthenticated':true, 'data':adminData })
+    }else{
+      return res.status(code.NOT_FOUND).json({'success':true, 'message':"Login success", 'isAuthenticated':false, 'data':{} })
+  
     }
   }catch(error){
-
+    console.log(error)
+    return res.status(code.NOT_FOUND).json({'success':true, 'message':"Login success", 'isAuthenticated':false, 'data':{} })
+ 
   }
 }
 

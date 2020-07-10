@@ -7,6 +7,7 @@ import {port} from './utils/config';
 import adminRoute from "./routes/adminRoutes";
 import logger from "./utils/logger";
 import cors from 'cors';
+import passport from 'passport';
 const app: Application = express();
 
 const morganOption = {
@@ -39,7 +40,11 @@ app.get("/", function (req: Request, res: Response, next: NextFunction) {
  return res.json({success:true, message:'api working fine', data:{}});
 });
 
+app.use(passport.initialize());
 
+// include passport stratagy
+// require("./utils/passport").usersAuth(passport)
+require("./utils/passport").adminAuth(passport)
 app.listen(port, function () {
   console.log(`Example app listening on port http://localhost:${port}`);
 });
