@@ -1,6 +1,13 @@
-import {Request} from 'express'
+import {Request} from 'express';
+declare global {
+  namespace Express {
+    interface Request {
+      user: any
+    }
+  }
+}
 namespace Denocart {
-  export interface Iadminresult {
+  export interface IadminUser {
     firstName: string;
     lastName: string;
     email: string;
@@ -18,3 +25,4 @@ namespace Denocart {
     updateRole: any
   }
 }
+
