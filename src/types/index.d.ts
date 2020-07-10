@@ -1,12 +1,5 @@
 import { Request } from "express";
 
-declare global {
-  namespace Express {
-    interface Request {
-      user: IadminUser //or other type you would like to use
-    }
-  }
-}
 namespace Denocart {
   export interface IadminUser {
     id:string;
@@ -28,11 +21,8 @@ namespace Denocart {
   }
 }
 
-export class User {
-  'userId': string
- }
 declare namespace Express {
   export interface Request {
-    user: User; 
+    user: IadminUser; 
   }
 }

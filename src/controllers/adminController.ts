@@ -95,7 +95,7 @@ export const adminLogin = async (req : Request,res: Response) => {
     let refreshToken = jwt.sign(payload, secretOrKey, { expiresIn: '30d' })
     checkDoc.refreshToken = refreshToken;
     checkDoc.save();
-    return res.status(code.OK).json({'success':true, 'message':"Login success", 'token':'Bearer '+token, refreshToken })
+    return res.status(code.OK).json({'success':true, 'message':"Login success", 'token':token, refreshToken })
   }
   catch(error){
     logger.error(error)
@@ -135,7 +135,7 @@ export const getAdminRefreshToken = async (req : Request,res: Response) => {
     let refreshToken = jwt.sign(payload, secretOrKey, { expiresIn: '30d' })
     checkDoc.refreshToken = refreshToken;
     checkDoc.save();
-    return res.status(code.OK).json({'success':true, 'message':"New token and refreshToken generated success", 'token':'Bearer '+token, refreshToken })
+    return res.status(code.OK).json({'success':true, 'message':"New token and refreshToken generated success", 'token':token, refreshToken })
   }
   catch(error){
     logger.error(error)
@@ -355,7 +355,7 @@ export const getAdminProfile  =async (req :Request, res:Response, next:NextFunct
     //@ts-ignore
     const userId = user?.id;
   
-    const adminData = await Admin.findById(userId).select('-password')
+    const adminData : any = await Admin.findById(userId).select('-password -refreshToken')
 
     if(adminData){
       return res.status(code.OK).json({'success':true, 'message':"Login success", 'isAuthenticated':true, 'data':adminData })
