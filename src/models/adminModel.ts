@@ -23,7 +23,7 @@ const AdminSchema: Schema = new Schema(
     phone:{type: String, required:true, unique:true, default:''},
     phoneCode:{type: String, required:true,  default:''},
     password: { type: String, required: true , default:''},
-    role: { type: [String], required: true, default:[]},
+    role: { type: [String], required: true, default:[], enum:['admin', 'superadmin']},
     active: { type: Boolean ,default:true},
     refreshToken: { type: String, default:'' }
   },
