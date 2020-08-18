@@ -8,6 +8,6 @@ const passportAuth =  passport.authenticate("admin", {  session: false });
 adminRoute.post('/register', adminRegisterValidation, registerAdmin );
 adminRoute.post('/login', adminLoginValidation, adminLogin );
 adminRoute.post('/refreshtoken', adminRefreshTokenValidation, getAdminRefreshToken );
-adminRoute.get('/admin',passportAuth, getAdminProfile)
+adminRoute.get('/me',passportAuth, getAdminProfile)
 
 export default adminRoute;
