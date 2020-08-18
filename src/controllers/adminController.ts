@@ -189,9 +189,9 @@ export const listAdmin = async (req :Request, res:Response, next:NextFunction)=>
  * url    : /api/admin/viewProfile
  * header : Authorization
 */
-export const viewProfile = (req : Denocart.IGetUserAuthInfoRequest,res: Response) => {
+export const viewProfile = async(req : Denocart.IGetUserAuthInfoRequest,res: Response) => {
 
-  Admin.findById(
+  await Admin.findById(
     req.user.id,
     {
       'firstName' : 1,
