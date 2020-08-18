@@ -190,7 +190,6 @@ export const listAdmin = async (req :Request, res:Response, next:NextFunction)=>
  * header : Authorization
 */
 export const viewProfile = async(req : Denocart.IGetUserAuthInfoRequest,res: Response) => {
-
   await Admin.findById(
     req.user.id,
     {
